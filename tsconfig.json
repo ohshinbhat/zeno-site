@@ -1,0 +1,49 @@
+{
+  "extends": "../zeno-ui/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noEmit": true,
+    "paths": {
+      "@zeno-ui/animations": [
+        "../zeno-ui/packages/animations/src/index.ts"
+      ],
+      "@zeno-ui/nativewind-preset": [
+        "../zeno-ui/packages/nativewind-preset/src/index.ts"
+      ],
+      "@zeno-ui/react": [
+        "../zeno-ui/packages/react/src/index.tsx"
+      ],
+      "@zeno-ui/tailwind-preset": [
+        "../zeno-ui/packages/tailwind-preset/src/index.ts"
+      ],
+      "@zeno-ui/theme-engine": [
+        "../zeno-ui/packages/theme-engine/src/index.ts"
+      ],
+      "@zeno-ui/theme-runtime": [
+        "../zeno-ui/packages/theme-runtime/src/index.tsx"
+      ],
+      "@zeno-ui/tokens": [
+        "../zeno-ui/packages/tokens/src/index.ts"
+      ]
+    },
+    "allowJs": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    ".next-dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "name": "zeno-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "yarn@1.22.22",
+  "scripts": {
+    "build:packages": "yarn --cwd ../zeno-ui build:packages",
+    "dev": "yarn build:packages && next dev -H 127.0.0.1",
+    "build": "yarn build:packages && next build",
+    "storybook": "yarn build:packages && HOME=.storybook-home STORYBOOK_DISABLE_TELEMETRY=1 STORYBOOK_DISABLE_CRASH_REPORTS=1 storybook dev -p 6006 -h 127.0.0.1",
+    "build-storybook": "yarn build:packages && HOME=.storybook-home STORYBOOK_DISABLE_TELEMETRY=1 STORYBOOK_DISABLE_CRASH_REPORTS=1 CI=1 storybook build",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@zeno-ui/animations": "file:../zeno-ui/packages/animations",
+    "@zeno-ui/nativewind-preset": "file:../zeno-ui/packages/nativewind-preset",
+    "@zeno-ui/react": "file:../zeno-ui/packages/react",
+    "@zeno-ui/tailwind-preset": "file:../zeno-ui/packages/tailwind-preset",
+    "@zeno-ui/theme-engine": "file:../zeno-ui/packages/theme-engine",
+    "@zeno-ui/theme-runtime": "file:../zeno-ui/packages/theme-runtime",
+    "@zeno-ui/tokens": "file:../zeno-ui/packages/tokens",
+    "@tailwindcss/postcss": "^4.0.0",
+    "lucide-react": "^0.468.0",
+    "next": "^15.1.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/addon-interactions": "^8.4.7",
+    "@storybook/react-vite": "^8.4.7",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "storybook": "^8.4.7",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  },
+  "resolutions": {
+    "@zeno-ui/animations": "file:../zeno-ui/packages/animations",
+    "@zeno-ui/nativewind-preset": "file:../zeno-ui/packages/nativewind-preset",
+    "@zeno-ui/react": "file:../zeno-ui/packages/react",
+    "@zeno-ui/tailwind-preset": "file:../zeno-ui/packages/tailwind-preset",
+    "@zeno-ui/theme-engine": "file:../zeno-ui/packages/theme-engine",
+    "@zeno-ui/theme-runtime": "file:../zeno-ui/packages/theme-runtime",
+    "@zeno-ui/tokens": "file:../zeno-ui/packages/tokens"
+  }
+}
