@@ -1,4 +1,4 @@
-import { createHostedThemeResponse, getThemeVersion } from "../../../theme-store";
+import { createHostedThemeResponse, createThemeCorsResponse, getThemeVersion } from "../../../theme-store";
 
 type RouteContext = {
   params: Promise<{
@@ -38,4 +38,8 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
       error: error instanceof Error ? error.message : "Theme version lookup failed."
     }, { status: 400 });
   }
+}
+
+export function OPTIONS(): Response {
+  return createThemeCorsResponse();
 }

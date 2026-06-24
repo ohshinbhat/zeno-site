@@ -43,7 +43,7 @@ export function createDetailsHref(form: ThemeFormState): string {
     accent: form.accent
   });
 
-  return `/details?${params.toString()}`;
+  return `/app/details?${params.toString()}`;
 }
 
 export function themeFormFromSearchParams(params: URLSearchParams): ThemeFormState {

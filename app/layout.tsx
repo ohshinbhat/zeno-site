@@ -3,8 +3,8 @@ import { SiteShell } from "./site-chrome";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Zeno UI Playground",
-  description: "Prompt, preview, and export consistent themed component systems with Zeno UI.",
+  title: "Zeno UI",
+  description: "Authenticate, generate, publish, and initialize cloud-hosted themes for Zeno UI.",
   icons: {
     icon: "/zeno-logo.svg",
     shortcut: "/zeno-logo.svg",
@@ -16,19 +16,20 @@ const themeInitScript = `
 (function () {
   try {
     var stored = window.localStorage.getItem("zeno-ui-site-mode");
-    var mode = stored === "dark" || stored === "light" ? stored : "light";
+    var hasChoice = window.localStorage.getItem("zeno-ui-site-mode-choice") === "true";
+    var mode = hasChoice && (stored === "dark" || stored === "light") ? stored : "dark";
     document.documentElement.dataset.siteMode = mode;
     document.documentElement.style.colorScheme = mode;
   } catch (_) {
-    document.documentElement.dataset.siteMode = "light";
-    document.documentElement.style.colorScheme = "light";
+    document.documentElement.dataset.siteMode = "dark";
+    document.documentElement.style.colorScheme = "dark";
   }
 })();
 `;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>): React.ReactElement {
   return (
-    <html lang="en" data-site-mode="light" suppressHydrationWarning>
+    <html lang="en" data-site-mode="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

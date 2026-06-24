@@ -9,7 +9,7 @@ export default function NotFound(): React.ReactElement {
         className="inline-flex h-10 items-center rounded-lg border border-border bg-surface px-4 text-sm font-semibold text-text transition hover:bg-surface-raised focus-visible:outline-none focus-visible:shadow-focus"
         href="/"
       >
-        Back to playground
+        Back to home
       </Link>
     </main>
   );

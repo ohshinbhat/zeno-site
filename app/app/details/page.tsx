@@ -6,8 +6,8 @@ import { Button, Card, Stack, Text } from "@zeno-ui/react";
 import { generateNativeWindThemeCss } from "@zeno-ui/nativewind-preset";
 import { generateExportBundle, generateRuntimeThemeCss } from "@zeno-ui/tailwind-preset";
 import { generateTheme } from "@zeno-ui/theme-engine";
-import { createDetailsHref, createThemeInput, defaultThemeForm, themeFormFromSearchParams, type ThemeFormState } from "../theme-playground";
-import { useDetailsHref } from "../site-chrome";
+import { createDetailsHref, createThemeInput, defaultThemeForm, themeFormFromSearchParams, type ThemeFormState } from "../../theme-playground";
+import { useDetailsHref } from "../../site-chrome";
 
 export default function DetailsPage(): React.ReactElement {
   const [form, setForm] = React.useState<ThemeFormState>(defaultThemeForm);

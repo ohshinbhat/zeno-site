@@ -12,7 +12,17 @@ function createConfig(phase: string): NextConfig {
       "@zeno-ui/theme-engine",
       "@zeno-ui/theme-runtime",
       "@zeno-ui/tokens"
-    ]
+    ],
+    webpack(config) {
+      config.resolve = config.resolve ?? {};
+      config.resolve.extensionAlias = {
+        ...config.resolve.extensionAlias,
+        ".js": [".ts", ".tsx", ".js"],
+        ".jsx": [".tsx", ".jsx"]
+      };
+
+      return config;
+    }
   };
 }
 
