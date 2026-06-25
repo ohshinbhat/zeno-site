@@ -1,4 +1,4 @@
-import { readZenoTokenConfig } from "@zeno-ui/tokens";
+import { readZenoTokenConfig } from "@zeno-site/tokens";
 
 export async function POST(request: Request): Promise<Response> {
   try {

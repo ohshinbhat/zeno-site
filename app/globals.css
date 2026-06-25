@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 @import "tailwindcss";
+@source "../node_modules/@zenoui/react/dist";
 
 @theme {
   --color-background: #f7f7f7;
@@ -136,6 +137,37 @@ textarea,
 pre {
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--color-text-muted), transparent 35%) transparent;
+}
+
+.zeno-soft-scroll {
+  scrollbar-color: color-mix(in srgb, var(--color-text-muted), transparent 52%) transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.zeno-soft-scroll::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+.zeno-soft-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.zeno-soft-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-text-muted), transparent 62%);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: var(--radius-pill);
+}
+
+.zeno-soft-scroll:hover::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-zeno-brand), var(--color-text-muted) 44%);
+  background-clip: padding-box;
+}
+
+.zeno-soft-scroll::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 input[type="color"] {

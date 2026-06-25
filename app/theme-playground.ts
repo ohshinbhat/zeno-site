@@ -1,5 +1,5 @@
-import type { ThemeInput } from "@zeno-ui/theme-engine";
-import { themePresets, type ThemeKnobs } from "@zeno-ui/tokens";
+import type { ThemeInput } from "@zeno-site/theme-engine";
+import { themePresets, type ThemeKnobs } from "@zeno-site/tokens";
 
 export type ThemeFormState = {
   prompt: string;
@@ -18,7 +18,7 @@ export const featuredPresetThemes = presetThemes;
 export const examples = presetThemes.map((preset) => preset.prompt);
 
 export const defaultThemeForm: ThemeFormState = {
-  prompt: examples[0] ?? "rainy glassmorphism fintech dashboard",
+  prompt: "",
   trend: "glassmorphism",
   mood: "rainy",
   motion: "smooth",

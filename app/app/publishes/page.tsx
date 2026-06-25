@@ -3,7 +3,7 @@
 import { CalendarClock, ChevronDown, Cloud, Code2, ExternalLink, FileJson, History, Layers3 } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
-import { Card, Stack, Text } from "@zeno-ui/react";
+import { Card, Stack, Text } from "@zeno-site/react";
 import { useAccountHistory, type PublishHistoryItem } from "../../site-chrome";
 
 type ProjectSummary = {
@@ -161,9 +161,9 @@ function PublishRow({ item, project }: { item: PublishHistoryItem; project: Proj
   const versionUrl = `/api/themes/${encodeURIComponent(projectId)}/versions/${encodeURIComponent(version)}.json`;
 
   return (
-    <Card variant="surface" className="rounded-lg p-0">
-      <div className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.7fr)] lg:items-center">
-        <div className="min-w-0">
+    <Card variant="surface" className="overflow-hidden rounded-lg p-0">
+      <div className="grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_minmax(220px,320px)] lg:items-center">
+        <div className="min-w-0 overflow-hidden">
           <div className="mb-3 flex flex-wrap items-center gap-2">
             <span className="inline-flex h-7 items-center gap-1.5 rounded-pill bg-[color-mix(in_srgb,var(--color-zeno-brand),transparent_88%)] px-2.5 text-xs font-black uppercase text-[var(--color-zeno-brand)]">
               <Cloud className="size-3.5" />
@@ -175,13 +175,15 @@ function PublishRow({ item, project }: { item: PublishHistoryItem; project: Proj
             </span>
           </div>
 
-          <Text weight="semibold" className="truncate font-mono text-sm leading-6">{version}</Text>
-          <Text size="label" tone="muted" className="mt-1 truncate font-mono">
+          <p className="max-w-full overflow-hidden text-ellipsis whitespace-nowrap font-mono text-sm font-semibold leading-6 text-text">
+            {version}
+          </p>
+          <p className="mt-1 max-w-full overflow-hidden text-ellipsis whitespace-nowrap font-mono text-xs leading-5 text-text-muted">
             {project?.name ?? projectId} · hash {hashPreview}
-          </Text>
+          </p>
         </div>
 
-        <div className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
+        <div className="grid min-w-0 gap-2 sm:grid-cols-3 lg:grid-cols-1">
           <PublishLink icon={<FileJson className="size-3.5" />} label="JSON" href={jsonUrl} />
           <PublishLink icon={<Code2 className="size-3.5" />} label="CSS" href={cssUrl} />
           <PublishLink icon={<Layers3 className="size-3.5" />} label="Version" href={versionUrl} />

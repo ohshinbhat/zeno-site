@@ -3,6 +3,7 @@ node_modules
 .next-dev
 storybook-static
 .storybook-home
+vendor/zeno-ui/packages/*/dist
 *.tsbuildinfo
 .env*.local
 .env

@@ -1,11 +1,11 @@
 import { createHash } from "node:crypto";
-import { generateRuntimeThemeCss } from "@zeno-ui/tailwind-preset";
+import { generateRuntimeThemeCss } from "@zeno-site/tailwind-preset";
 import {
   createZenoTokenConfig,
   readZenoTokenConfig,
   type ZenoTokenConfig,
   type ZenoTokenConfigInput
-} from "@zeno-ui/tokens";
+} from "@zeno-site/tokens";
 import type { AuthUser } from "../../auth";
 
 export type ProjectRole = "owner" | "admin" | "member";
@@ -49,7 +49,7 @@ export type PublishHistoryItem = {
 export type PublishThemeInput = {
   projectId: string;
   environment: string;
-  config: ZenoTokenConfigInput | ZenoTokenConfig;
+  config: unknown;
   userId?: string;
   themeId?: string;
 };
@@ -137,8 +137,11 @@ function getMemoryStore(): MemoryStore {
 }
 
 function getSupabaseSettings(): SupabaseSettings | null {
-  const url = process.env.ZENO_SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.ZENO_SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const allowPublicEnvFallback = process.env.NODE_ENV !== "production";
+  const url = process.env.SUPABASE_URL
+    ?? process.env.ZENO_SUPABASE_URL
+    ?? (allowPublicEnvFallback ? process.env.NEXT_PUBLIC_SUPABASE_URL : undefined);
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.ZENO_SUPABASE_SERVICE_ROLE_KEY;
 
   if (process.env.NODE_ENV === "production" && (!url || !serviceRoleKey)) {
     throw new Error("Supabase theme storage is not configured.");
@@ -334,11 +337,13 @@ async function insertSupabase<T>(settings: SupabaseSettings, path: string, body:
   return await response.json() as T;
 }
 
-export function createTokenConfig(input: ZenoTokenConfigInput | ZenoTokenConfig): ZenoTokenConfig {
+export function createTokenConfig(input: unknown): ZenoTokenConfig {
   const readResult = readZenoTokenConfig(input);
-  const config = readResult.valid
-    ? readResult.config
-    : createZenoTokenConfig(input);
+  if (!readResult.valid) {
+    throw new Error(readResult.issues.join(" ") || "Token config is invalid.");
+  }
+
+  const config = readResult.config;
   const validation = readZenoTokenConfig(config);
 
   if (!validation.valid) {
@@ -468,7 +473,7 @@ export async function saveThemeDraft({
   projectId: string;
   userId: string;
   name: string;
-  config: ZenoTokenConfigInput | ZenoTokenConfig;
+  config: unknown;
   form: unknown;
   themeId?: string;
 }): Promise<ThemeDraft> {

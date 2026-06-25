@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronDown, History, LogOut, Moon, Sun, UserRound } from "lucide-react";
+import { ChevronDown, Github, History, LogOut, Moon, Sun, UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
-import { Text } from "@zeno-ui/react";
+import { Text } from "@zeno-site/react";
 import type { AuthUser } from "./auth";
 import { createDetailsHref, defaultThemeForm } from "./theme-playground";
 
@@ -26,6 +26,8 @@ type SiteChromeContextValue = {
 
 const defaultDetailsHref = createDetailsHref(defaultThemeForm);
 const SiteChromeContext = React.createContext<SiteChromeContextValue | null>(null);
+const siteGithubUrl = "https://github.com/ohshinbhat/zeno-site";
+const packageGithubUrl = "https://github.com/ohshinbhat/zeno-ui";
 
 export function SiteShell({ children }: { children: React.ReactNode }): React.ReactElement {
   const [detailsHref, setDetailsHref] = React.useState(defaultDetailsHref);
@@ -100,7 +102,6 @@ export function useSiteMode(): [SiteMode, () => void] {
 
   const applyMode = React.useCallback((next: SiteMode, persist = false) => {
     document.documentElement.dataset.siteMode = next;
-    document.documentElement.style.colorScheme = next;
     if (persist) {
       window.localStorage.setItem("zeno-ui-site-mode", next);
       window.localStorage.setItem("zeno-ui-site-mode-choice", "true");
@@ -229,7 +230,8 @@ export function SiteHeader({
           <NavItem href="/docs" active={effectiveActive === "docs"} onNavigate={startRouteSwitch}>Docs</NavItem>
           <NavItem href="/app" active={effectiveActive === "app"} onNavigate={startRouteSwitch}>Console</NavItem>
           {isAuthenticated ? <NavItem href="/app/publishes" active={effectiveActive === "publishes"} onNavigate={startRouteSwitch}>Publishes</NavItem> : null}
-          {effectiveActive === "app" && isAuthenticated ? <NavItem href={detailsHref} active={false} onNavigate={startRouteSwitch}>Details</NavItem> : null}
+          <ExternalNavItem href={siteGithubUrl} label="Site repo" />
+          <ExternalNavItem href={packageGithubUrl} label="Package repo" />
           {user ? (
             <button
               className="inline-flex h-9 max-w-[220px] items-center gap-2 rounded-md border border-border bg-surface px-2.5 text-xs font-bold text-text shadow-[0_0_0_1px_rgb(255_255_255_/_0.02)] transition hover:bg-surface-raised focus-visible:outline-none focus-visible:shadow-focus"
@@ -273,12 +275,15 @@ function getProfileLabel(user: AuthUser): string {
   return user.name || user.email.split("@")[0] || "Profile";
 }
 
-function ProfileAvatar({ user }: { user: AuthUser }): React.ReactElement {
+function ProfileAvatar({ user, size = "sm" }: { user: AuthUser; size?: "sm" | "lg" }): React.ReactElement {
   const label = getProfileLabel(user);
   const initial = label.trim().slice(0, 1).toUpperCase() || "Z";
 
   return (
-    <span className="grid size-6 shrink-0 place-items-center overflow-hidden rounded-full bg-[var(--color-zeno-brand)] text-[0.68rem] font-black text-white">
+    <span className={[
+      "grid shrink-0 place-items-center overflow-hidden rounded-full bg-[var(--color-zeno-brand)] font-black text-white",
+      size === "lg" ? "size-11 text-base" : "size-6 text-[0.68rem]"
+    ].join(" ")}>
       {user.avatarUrl ? <img className="size-full object-cover" src={user.avatarUrl} alt="" referrerPolicy="no-referrer" /> : initial}
     </span>
   );
@@ -300,16 +305,18 @@ function AccountDropdown({
   const label = user.name || user.email.split("@")[0] || "Profile";
 
   return (
-    <div className="absolute right-4 top-[calc(100%+0.5rem)] z-50 grid w-[min(320px,calc(100vw-2rem))] gap-3 rounded-lg border border-border bg-surface p-3 text-text shadow-floating md:right-6" role="menu">
-      <div className="grid gap-2">
-        <Text size="label" tone="muted" weight="bold" className="text-[0.62rem] uppercase leading-3">Profile</Text>
-        <div className="flex min-w-0 items-center gap-2">
-          <ProfileAvatar user={user} />
-          <div className="min-w-0 flex-1">
-            <Text weight="semibold" className="truncate text-sm leading-5">{label}</Text>
-            <Text size="label" tone="muted" className="truncate">{user.email}</Text>
+    <div className="absolute right-4 top-[calc(100%+0.5rem)] z-50 grid w-[min(380px,calc(100vw-2rem))] gap-3 rounded-lg border border-border bg-surface p-4 text-text shadow-floating md:right-6" role="menu">
+      <div className="grid gap-3">
+        <Text size="label" tone="muted" weight="bold" className="text-[0.68rem] uppercase leading-3 tracking-[0.08em]">Profile</Text>
+        <div className="grid min-w-0 grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-4">
+          <ProfileAvatar user={user} size="lg" />
+          <div className="grid min-w-0 gap-1">
+            <Text weight="semibold" className="block truncate text-base leading-5">{label}</Text>
+            <Text size="label" tone="muted" className="block truncate text-sm leading-5">{user.email}</Text>
           </div>
-          <UserRound className="size-4 shrink-0 text-text-muted" />
+          <span className="grid size-9 shrink-0 place-items-center rounded-lg border border-border bg-background text-text-muted">
+            <UserRound className="size-4" />
+          </span>
         </div>
       </div>
 
@@ -394,5 +401,21 @@ function NavItem({
     >
       {children}
     </Link>
+  );
+}
+
+function ExternalNavItem({ href, label }: { href: string; label: string }): React.ReactElement {
+  return (
+    <a
+      aria-label={label}
+      className="inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-sm font-semibold text-text-muted transition hover:bg-surface-raised hover:text-[var(--color-zeno-brand)] focus-visible:outline-none focus-visible:shadow-[0_0_0_3px_rgb(235_75_41_/_0.18)]"
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      title={label}
+    >
+      <Github className="size-4" />
+      <span className="hidden lg:inline">{label === "Site repo" ? "Site" : "Package"}</span>
+    </a>
   );
 }

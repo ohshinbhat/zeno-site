@@ -1,17 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Sparkles } from "lucide-react";
-import { Button, Card, Input, Stack, Text } from "@zeno-ui/react";
-import { generateRuntimeThemeCss } from "@zeno-ui/tailwind-preset";
-import { generateTheme } from "@zeno-ui/theme-engine";
-
-const theme = generateTheme({
-  prompt: "bento saas dashboard compact",
-  trend: "bento",
-  mood: "clear",
-  motion: "smooth",
-  brand: "#4f46e5",
-  accent: "#06b6d4"
-});
+import { Button, Card, Input, Stack, Text } from "@zeno-site/react";
 
 const meta = {
   title: "Zeno UI/Primitives",
@@ -19,7 +8,6 @@ const meta = {
   decorators: [
     (Story) => (
       <div className="zeno-preview min-w-[720px] rounded-card bg-background p-6 text-text">
-        <style>{generateRuntimeThemeCss(theme.tokens, ".zeno-preview")}</style>
         <Story />
       </div>
     )
@@ -41,7 +29,7 @@ export const PrimitiveSet: Story = {
         <Card.Header>
           <Stack gap="$2">
             <Text weight="semibold">Generated theme</Text>
-            <Text tone="muted">Token values are injected at the preview scope.</Text>
+            <Text tone="muted">Primitives compose against the active Tailwind token surface.</Text>
           </Stack>
           <Sparkles className="size-5 text-brand" />
         </Card.Header>

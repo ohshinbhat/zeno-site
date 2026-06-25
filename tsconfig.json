@@ -1,29 +1,23 @@
 {
-  "extends": "../zeno-ui/tsconfig.base.json",
+  "extends": "./vendor/zeno-site/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "noEmit": true,
     "paths": {
-      "@zeno-ui/animations": [
-        "../zeno-ui/packages/animations/src/index.ts"
+      "@zeno-site/nativewind-preset": [
+        "vendor/zeno-site/packages/nativewind-preset/src/index.ts"
       ],
-      "@zeno-ui/nativewind-preset": [
-        "../zeno-ui/packages/nativewind-preset/src/index.ts"
+      "@zeno-site/react": [
+        "vendor/zeno-site/packages/react/src/index.tsx"
       ],
-      "@zeno-ui/react": [
-        "../zeno-ui/packages/react/src/index.tsx"
+      "@zeno-site/tailwind-preset": [
+        "vendor/zeno-site/packages/tailwind-preset/src/index.ts"
       ],
-      "@zeno-ui/tailwind-preset": [
-        "../zeno-ui/packages/tailwind-preset/src/index.ts"
+      "@zeno-site/theme-engine": [
+        "vendor/zeno-site/packages/theme-engine/src/index.ts"
       ],
-      "@zeno-ui/theme-engine": [
-        "../zeno-ui/packages/theme-engine/src/index.ts"
-      ],
-      "@zeno-ui/theme-runtime": [
-        "../zeno-ui/packages/theme-runtime/src/index.tsx"
-      ],
-      "@zeno-ui/tokens": [
-        "../zeno-ui/packages/tokens/src/index.ts"
+      "@zeno-site/tokens": [
+        "vendor/zeno-site/packages/tokens/src/index.ts"
       ]
     },
     "allowJs": true,

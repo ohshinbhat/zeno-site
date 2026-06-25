@@ -1,6 +1,7 @@
-import { generateTheme, type ThemeInput } from "@zeno-ui/theme-engine";
-import { createZenoTokenConfig } from "@zeno-ui/tokens";
+import { generateTheme, type ThemeInput } from "@zeno-site/theme-engine";
+import { createZenoTokenConfig } from "@zeno-site/tokens";
 import { getCurrentUserFromRequest } from "../../../auth";
+import { createAIThemeInput } from "../ai-theme-input";
 
 export async function POST(request: Request): Promise<Response> {
   const user = await getCurrentUserFromRequest(request);
@@ -10,11 +11,12 @@ export async function POST(request: Request): Promise<Response> {
 
   try {
     const body = await request.json() as ThemeInput;
-    const generated = generateTheme(body);
+    const aiTheme = await createAIThemeInput(body);
+    const generated = generateTheme(aiTheme.input);
     const metadata: { name: string; description?: string } = {
       name: generated.name
     };
-    if (body.prompt) metadata.description = body.prompt;
+    if (aiTheme.input.prompt) metadata.description = aiTheme.input.prompt;
 
     const config = createZenoTokenConfig({
       metadata,
@@ -23,6 +25,8 @@ export async function POST(request: Request): Promise<Response> {
 
     return Response.json({
       ...generated,
+      input: aiTheme.input,
+      ai: aiTheme.source,
       config
     });
   } catch (error) {

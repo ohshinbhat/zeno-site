@@ -19,10 +19,8 @@ const themeInitScript = `
     var hasChoice = window.localStorage.getItem("zeno-ui-site-mode-choice") === "true";
     var mode = hasChoice && (stored === "dark" || stored === "light") ? stored : "dark";
     document.documentElement.dataset.siteMode = mode;
-    document.documentElement.style.colorScheme = mode;
   } catch (_) {
     document.documentElement.dataset.siteMode = "dark";
-    document.documentElement.style.colorScheme = "dark";
   }
 })();
 `;

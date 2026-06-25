@@ -3,7 +3,7 @@
 import { ArrowRight, LockKeyhole, Sparkles } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
-import { Button, Card, Input, Stack, Text } from "@zeno-ui/react";
+import { Button, Card, Input, Stack, Text } from "@zeno-site/react";
 
 type AuthMode = "login" | "signup";
 
@@ -118,13 +118,13 @@ export default function LoginPage(): React.ReactElement {
               required
             />
             {error ? <Text size="label" tone="danger" weight="medium">{error}</Text> : null}
-            <Button type="submit" disabled={isSubmitting} className="rounded-lg" style={{ backgroundColor: "var(--color-zeno-brand)", borderColor: "var(--color-zeno-brand)" }}>
+            <Button type="submit" disabled={isSubmitting} className="rounded-lg !border-[var(--color-zeno-brand)] !bg-[var(--color-zeno-brand)] !text-white hover:brightness-95">
               <Button.Text>{isSubmitting ? "Working" : mode === "login" ? "Log in" : "Create account"}</Button.Text>
               <Button.Icon><ArrowRight className="size-4" /></Button.Icon>
             </Button>
           </form>
         </Card.Content>
-        <Card.Footer>
+        <Card.Footer className="flex flex-wrap items-center gap-x-5 gap-y-2">
           <button
             className="text-sm font-bold text-[var(--color-zeno-brand)] underline-offset-4 hover:underline"
             type="button"
