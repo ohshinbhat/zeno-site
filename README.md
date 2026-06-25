@@ -81,7 +81,7 @@ export const zenoThemeSource = {
   type: "zeno",
   projectId: "your-project-id",
   environment: "production",
-  baseUrl: "https://your-zeno-site.vercel.app"
+  baseUrl: "https://zenoui.in"
 } as const;
 ```
 
@@ -217,15 +217,18 @@ Create `.env.local`:
 SUPABASE_URL=
 SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
+GEMINI_API_KEY=
 ```
 
-Production requires all three variables:
+Production requires these Supabase variables:
 
 - `SUPABASE_URL`: your Supabase project URL.
 - `SUPABASE_ANON_KEY`: used by server routes for Supabase Auth sign-in, sign-up, and session lookup.
 - `SUPABASE_SERVICE_ROLE_KEY`: used only by server routes for projects, drafts, published theme versions, and environment aliases.
 
-Do not use `NEXT_PUBLIC_` for these keys in production. The anon key is safe to use with Supabase RLS, but this app does not need to expose it to browser JavaScript. Never expose `SUPABASE_SERVICE_ROLE_KEY` in client code or a public bundle.
+Do not add `NEXT_PUBLIC_` Supabase keys for a new deploy. The app can still read existing `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` host settings for compatibility, but the env file should use the server-side Supabase names above. Never expose `SUPABASE_SERVICE_ROLE_KEY` in client code or a public bundle.
+
+For production AI-assisted theme generation, set `GEMINI_API_KEY`. Without it, theme generation still works through the deterministic generator.
 
 ## Local Development
 

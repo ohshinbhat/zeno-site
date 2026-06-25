@@ -41,13 +41,12 @@ function canUseLocalAuthFallback(): boolean {
 }
 
 export function getSupabaseAuthSettings(): SupabaseAuthSettings | null {
-  const allowPublicEnvFallback = process.env.NODE_ENV !== "production";
   const url = process.env.SUPABASE_URL
     ?? process.env.ZENO_SUPABASE_URL
-    ?? (allowPublicEnvFallback ? process.env.NEXT_PUBLIC_SUPABASE_URL : undefined);
+    ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.SUPABASE_ANON_KEY
     ?? process.env.ZENO_SUPABASE_ANON_KEY
-    ?? (allowPublicEnvFallback ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : undefined);
+    ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (process.env.NODE_ENV === "production" && (!url || !anonKey)) {
     throw new Error("Supabase auth is not configured.");

@@ -32,7 +32,7 @@ const sourceSnippet = `export const zenoThemeSource = {
   type: "zeno",
   projectId: "acme-dashboard",
   environment: "production",
-  baseUrl: "https://zeno.example.com"
+  baseUrl: "https://zenoui.in"
 } as const;`;
 
 const scriptSnippet = `import { createZenoThemeScript } from "@zenoui/react";

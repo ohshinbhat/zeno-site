@@ -137,10 +137,9 @@ function getMemoryStore(): MemoryStore {
 }
 
 function getSupabaseSettings(): SupabaseSettings | null {
-  const allowPublicEnvFallback = process.env.NODE_ENV !== "production";
   const url = process.env.SUPABASE_URL
     ?? process.env.ZENO_SUPABASE_URL
-    ?? (allowPublicEnvFallback ? process.env.NEXT_PUBLIC_SUPABASE_URL : undefined);
+    ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.ZENO_SUPABASE_SERVICE_ROLE_KEY;
 
   if (process.env.NODE_ENV === "production" && (!url || !serviceRoleKey)) {

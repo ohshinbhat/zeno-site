@@ -155,7 +155,7 @@ export const zenoThemeSource = {
   type: "zeno",
   projectId: "your-project-id",
   environment: "production",
-  baseUrl: "https://your-zeno-site.vercel.app"
+  baseUrl: "https://zenoui.in"
 } as const;
 ```
 
@@ -168,7 +168,7 @@ const source = {
   type: "zeno",
   projectId: "your-project-id",
   environment: "production",
-  baseUrl: "https://your-zeno-site.vercel.app"
+  baseUrl: "https://zenoui.in"
 } as const;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -559,24 +559,15 @@ When working on Supabase:
 
 The site may vendor compatibility shims inside the repo for deployment, but the external consumer package name should remain `@zenoui/react`.
 
-Required environment variables:
+Production environment variables:
 
 ```txt
 SUPABASE_URL=
 SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
+GEMINI_API_KEY=
 ```
 
-Optional local-development aliases:
-
-```txt
-ZENO_SUPABASE_URL=
-ZENO_SUPABASE_ANON_KEY=
-ZENO_SUPABASE_SERVICE_ROLE_KEY=
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-```
-
-Do not use `NEXT_PUBLIC_` Supabase keys in production. The app only reads those public aliases as a local-development fallback.
+Use the three Supabase keys for auth, project data, publishing, and runtime theme storage. Use `GEMINI_API_KEY` for production AI-assisted theme generation. Existing `ZENO_SUPABASE_*` and `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` aliases are read for compatibility, but do not add them to new env files. Never expose `SUPABASE_SERVICE_ROLE_KEY` through a `NEXT_PUBLIC_` variable.
 
 Never commit `.env.local`.
