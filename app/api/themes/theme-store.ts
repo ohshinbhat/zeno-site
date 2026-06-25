@@ -136,11 +136,18 @@ function getMemoryStore(): MemoryStore {
   return globalStore.__zenoThemeStore;
 }
 
+function firstEnv(...names: string[]): string | undefined {
+  for (const name of names) {
+    const value = process.env[name]?.trim();
+    if (value) return value;
+  }
+
+  return undefined;
+}
+
 function getSupabaseSettings(): SupabaseSettings | null {
-  const url = process.env.SUPABASE_URL
-    ?? process.env.ZENO_SUPABASE_URL
-    ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.ZENO_SUPABASE_SERVICE_ROLE_KEY;
+  const url = firstEnv("SUPABASE_URL", "ZENO_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL");
+  const serviceRoleKey = firstEnv("SUPABASE_SERVICE_ROLE_KEY", "ZENO_SUPABASE_SERVICE_ROLE_KEY");
 
   if (process.env.NODE_ENV === "production" && (!url || !serviceRoleKey)) {
     throw new Error("Supabase theme storage is not configured.");

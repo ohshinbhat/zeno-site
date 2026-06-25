@@ -23,6 +23,10 @@ type SupabaseAuthSettings = {
 type SupabaseAuthResponse = {
   access_token?: string;
   expires_in?: number;
+  error?: string;
+  error_code?: string;
+  message?: string;
+  msg?: string;
   user?: {
     id: string;
     email?: string;
@@ -40,13 +44,18 @@ function canUseLocalAuthFallback(): boolean {
   return process.env.NODE_ENV !== "production";
 }
 
+function firstEnv(...names: string[]): string | undefined {
+  for (const name of names) {
+    const value = process.env[name]?.trim();
+    if (value) return value;
+  }
+
+  return undefined;
+}
+
 export function getSupabaseAuthSettings(): SupabaseAuthSettings | null {
-  const url = process.env.SUPABASE_URL
-    ?? process.env.ZENO_SUPABASE_URL
-    ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.SUPABASE_ANON_KEY
-    ?? process.env.ZENO_SUPABASE_ANON_KEY
-    ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const url = firstEnv("SUPABASE_URL", "ZENO_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL");
+  const anonKey = firstEnv("SUPABASE_ANON_KEY", "ZENO_SUPABASE_ANON_KEY", "NEXT_PUBLIC_SUPABASE_ANON_KEY");
 
   if (process.env.NODE_ENV === "production" && (!url || !anonKey)) {
     throw new Error("Supabase auth is not configured.");
@@ -119,6 +128,15 @@ function readCookie(header: string | null, name: string): string | null {
   return null;
 }
 
+function getSupabaseAuthError(result: SupabaseAuthResponse & { error_description?: string }): string {
+  return result.error_description
+    || result.message
+    || result.msg
+    || result.error
+    || result.error_code
+    || "Authentication failed.";
+}
+
 function getRequestToken(request: Request): string | null {
   const bearer = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
   return bearer || readCookie(request.headers.get("cookie"), accessCookieName);
@@ -156,12 +174,16 @@ async function createSupabaseSession(path: "signup" | "token?grant_type=password
     body: JSON.stringify({ email: normalizeEmail(email), password }),
     cache: "no-store"
   });
-  const result = await response.json() as SupabaseAuthResponse & { msg?: string; error_description?: string };
+  const result = await response.json() as SupabaseAuthResponse & { error_description?: string };
 
   const user = result.user ? normalizeSupabaseUser(result.user) : null;
 
+  if (path === "signup" && response.ok && user && !result.access_token) {
+    throw new Error("Check your email to confirm your account, then log in.");
+  }
+
   if (!response.ok || !result.access_token || !user) {
-    throw new Error(result.error_description || result.msg || "Authentication failed.");
+    throw new Error(getSupabaseAuthError(result));
   }
 
   return {
